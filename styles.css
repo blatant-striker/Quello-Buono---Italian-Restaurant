@@ -44,6 +44,22 @@ body {
     box-shadow: 0 2px 20px rgba(0,0,0,0.3);
 }
 
+@media (max-width: 768px) {
+    .navbar {
+        padding: 1.8rem 2rem;
+    }
+    
+    .navbar.scrolled {
+        background: rgba(10, 10, 10, 0.95);
+        padding: 1.5rem 2rem;
+    }
+}
+
+.logo-link {
+    text-decoration: none;
+    display: block;
+}
+
 .logo {
     font-size: 2rem;
     font-weight: 700;
@@ -931,6 +947,11 @@ footer {
     color: var(--primary-color);
 }
 
+/* Menu Expand Button (hidden by default for desktop) */
+.menu-expand-button {
+    display: none;
+}
+
 /* Responsive Design */
 @media (max-width: 992px) {
     .features-grid {
@@ -948,11 +969,71 @@ footer {
         display: none;
     }
     
+    .logo-link {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    html, body {
+        font-size: 95%;
+    }
+    
     .hero h1 {
         font-size: 2.5rem;
     }
     
     .menu-grid {
         grid-template-columns: 1fr;
+    }
+    
+    .menu-grid.collapsed .menu-item:nth-child(n+5) {
+        display: none;
+    }
+    
+    .menu-expand-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 2rem auto;
+        padding: 1rem 2rem;
+        background: var(--primary-color);
+        color: white;
+        border: none;
+        border-radius: var(--border-radius);
+        cursor: pointer;
+        font-weight: 600;
+        gap: 0.5rem;
+        transition: all 0.3s ease;
+    }
+    
+    .menu-expand-button:hover {
+        background: #6B3D13;
+    }
+    
+    .menu-expand-button i {
+        transition: transform 0.3s ease;
+    }
+    
+    .menu-expand-button.expanded i {
+        transform: rotate(180deg);
+    }
+    
+    .footer-content {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .footer-section {
+        margin-bottom: 2rem;
+    }
+    
+    .footer-section h3::after {
+        left: 50%;
+        transform: translateX(-50%);
+    }
+    
+    .social-links {
+        justify-content: center;
     }
 }

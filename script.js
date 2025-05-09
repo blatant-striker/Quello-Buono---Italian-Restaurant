@@ -52,6 +52,26 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
     
+    // Menu expand button functionality
+    const menuExpandButton = document.querySelector('.menu-expand-button');
+    const menuGrid = document.querySelector('.menu-grid');
+    
+    if (menuExpandButton && menuGrid) {
+        menuExpandButton.addEventListener('click', () => {
+            menuGrid.classList.toggle('collapsed');
+            
+            if (menuGrid.classList.contains('collapsed')) {
+                menuExpandButton.querySelector('span').textContent = 'Show More';
+                menuExpandButton.classList.remove('expanded');
+                // Scroll to menu section when collapsing
+                document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
+            } else {
+                menuExpandButton.querySelector('span').textContent = 'Show Less';
+                menuExpandButton.classList.add('expanded');
+            }
+        });
+    }
+    
     // Initial check for navbar
     if (window.scrollY > 50) {
         navbar.classList.add('scrolled');
