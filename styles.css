@@ -175,6 +175,8 @@ body {
     line-height: 1.8;
     margin-bottom: 2rem;
     color: rgba(255,255,255,0.9);
+    padding: 0 3rem;
+    text-align: center;
 }
 
 .cta-button {
@@ -663,6 +665,41 @@ body {
 
 /* Contact form styling */
 
+/* Map styling */
+.map-container {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.map-container.full-width {
+    max-width: 1200px;
+    margin: 3rem auto 0;
+    padding: 2.5rem;
+}
+
+.map-container h3 {
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+    color: var(--accent-color-light);
+    font-family: 'Playfair Display', serif;
+}
+
+.map-wrapper {
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+}
+
+.map-address, .map-plus-code {
+    color: rgba(255, 255, 255, 0.8);
+    margin-bottom: 0.5rem;
+    font-size: 1rem;
+}
+
 .form-group {
     position: relative;
     margin-bottom: 1rem;
@@ -723,7 +760,8 @@ body {
     align-items: center;
     gap: 0.5rem;
     transition: all 0.3s ease;
-    margin-top: 2rem;
+    margin-top: 1rem;
+    margin-bottom: 1rem;
     text-decoration: none;
 }
 
