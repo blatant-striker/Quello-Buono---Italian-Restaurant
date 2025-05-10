@@ -175,8 +175,8 @@ body {
     line-height: 1.8;
     margin-bottom: 2rem;
     color: rgba(255,255,255,0.9);
-    padding: 0 3rem;
-    text-align: center;
+    padding: 0 2rem;
+    text-align: justify;
 }
 
 .cta-button {
@@ -694,6 +694,11 @@ body {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
 }
 
+.map-wrapper iframe {
+    display: block;
+    height: 450px;
+}
+
 .map-address, .map-plus-code {
     color: rgba(255, 255, 255, 0.8);
     margin-bottom: 0.5rem;
@@ -760,8 +765,7 @@ body {
     align-items: center;
     gap: 0.5rem;
     transition: all 0.3s ease;
-    margin-top: 1rem;
-    margin-bottom: 1rem;
+    margin-top: 2rem;
     text-decoration: none;
 }
 
@@ -1010,6 +1014,15 @@ footer {
 @media (max-width: 768px) {
     .nav-links {
         display: none;
+    }
+    
+    .map-wrapper iframe {
+        height: 300px;
+    }
+    
+    .map-container.full-width {
+        padding: 1.5rem;
+        margin-top: 2rem;
     }
     
     .logo-link {
