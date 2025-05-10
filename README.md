@@ -15,7 +15,6 @@ A sleek, minimalist showcase website for Quello Buono Italian restaurant, design
 
 1. Clone this repository
 2. Open `index.html` in your web browser
-3. Optionally, replace the placeholder images in the `images` folder with your own images
 
 ## Technologies Used
 
