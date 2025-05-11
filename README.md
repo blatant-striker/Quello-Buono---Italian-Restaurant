@@ -15,7 +15,6 @@ A sleek, minimalist showcase website for Quello Buono Italian restaurant, design
 
 1. Clone this repository
 2. Open `index.html` in your web browser
-3. Optionally, replace the placeholder images in the `images` folder with your own images
 
 ## Technologies Used
 
@@ -27,9 +26,14 @@ A sleek, minimalist showcase website for Quello Buono Italian restaurant, design
 
 ## Customization
 
-Feel free to customize the color scheme by modifying the CSS variables in the `:root` selector at the top of `styles.css`. The main colors are:
+  The main colors are:
 
-- Primary color: `--primary-color`
-- Secondary color: `--secondary-color`
-- Text color: `--text-color`
-- Background color: `--background-color`
+- Primary color: `--primary-color` (#8B4513 - Earthy brown)
+- Secondary color: `--secondary-color` (#6B8E23 - Earthy green)
+- Text color: `--text-color` (#2F4F4F - Dark slate)
+- Background color: `--background-color` (#F5F5DC - Beige)
+
+Additional colors used in the design:
+- Accent color: `--accent-color` (#D2B48C - Beige)
+- Accent color light: `--accent-color-light` (#E5A97E - Lighter copper)
+- Light gray: `--light-gray` (#E6E6FA - Light lavender)
