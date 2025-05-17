@@ -1,4 +1,132 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Login and Signup Modal Functionality
+    const getStartedButton = document.getElementById('get-started-button');
+    const loginModal = document.getElementById('login-modal');
+    const signupModal = document.getElementById('signup-modal');
+    const closeButtons = document.querySelectorAll('.close-modal');
+    const switchToSignup = document.getElementById('switch-to-signup');
+    const switchToLogin = document.getElementById('switch-to-login');
+    const loginForm = document.getElementById('login-form');
+    const signupForm = document.getElementById('signup-form');
+    
+    // Function to open modal with animation
+    const openModal = (modal) => {
+        modal.style.display = 'block';
+        setTimeout(() => {
+            modal.classList.add('active');
+        }, 10);
+    };
+    
+    // Function to close modal with animation
+    const closeModal = (modal) => {
+        modal.classList.remove('active');
+        setTimeout(() => {
+            modal.style.display = 'none';
+        }, 400); // Match the CSS transition time
+    };
+    
+    // Event listener for opening login modal by default when Get Started is clicked
+    getStartedButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(loginModal);
+    });
+    
+    // Event listeners for closing modals
+    closeButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            closeModal(loginModal);
+            closeModal(signupModal);
+        });
+    });
+    
+    // Close modal when clicking outside of it
+    window.addEventListener('click', (e) => {
+        if (e.target === loginModal) {
+            closeModal(loginModal);
+        }
+        if (e.target === signupModal) {
+            closeModal(signupModal);
+        }
+    });
+    
+    // Switch between login and signup
+    switchToSignup.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeModal(loginModal);
+        setTimeout(() => {
+            openModal(signupModal);
+        }, 400);
+    });
+    
+    switchToLogin.addEventListener('click', (e) => {
+        e.preventDefault();
+        closeModal(signupModal);
+        setTimeout(() => {
+            openModal(loginModal);
+        }, 400);
+    });
+    
+    // Form submission handling
+    loginForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const email = document.getElementById('login-email').value;
+        const password = document.getElementById('login-password').value;
+        
+        // Here you would typically authenticate with a backend
+        console.log('Login attempt:', { email, password });
+        
+        // Show success message
+        const successMessage = document.createElement('div');
+        successMessage.className = 'success-message';
+        successMessage.innerHTML = `<i class="fas fa-check-circle"></i> Login successful!`;
+        
+        loginForm.appendChild(successMessage);
+        
+        // Close modal after successful login
+        setTimeout(() => {
+            closeModal(loginModal);
+            // Remove success message after modal is closed
+            setTimeout(() => {
+                loginForm.removeChild(successMessage);
+                loginForm.reset();
+            }, 500);
+        }, 2000);
+    });
+    
+    signupForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        const name = document.getElementById('signup-name').value;
+        const email = document.getElementById('signup-email').value;
+        const password = document.getElementById('signup-password').value;
+        const confirmPassword = document.getElementById('signup-confirm-password').value;
+        
+        // Check if passwords match
+        if (password !== confirmPassword) {
+            alert('Passwords do not match!');
+            return;
+        }
+        
+        // Here you would typically register with a backend
+        console.log('Signup attempt:', { name, email, password });
+        
+        // Show success message
+        const successMessage = document.createElement('div');
+        successMessage.className = 'success-message';
+        successMessage.innerHTML = `<i class="fas fa-check-circle"></i> Account created successfully!`;
+        
+        signupForm.appendChild(successMessage);
+        
+        // Close modal after successful signup
+        setTimeout(() => {
+            closeModal(signupModal);
+            // Remove success message after modal is closed
+            setTimeout(() => {
+                signupForm.removeChild(successMessage);
+                signupForm.reset();
+            }, 500);
+        }, 2000);
+    });
+
     // Menu filtering functionality
     const menuCategories = document.querySelectorAll('.menu-category');
     const menuItems = document.querySelectorAll('.menu-item[data-category]');

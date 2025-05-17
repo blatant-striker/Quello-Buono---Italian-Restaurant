@@ -24,7 +24,65 @@
             <li><a href="#contact">Contact</a></li>
             <li><a href="#location">Find Us</a></li>
         </ul>
+        <a href="#" id="get-started-button" class="get-started-btn">Get Started</a>
     </nav>
+    
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h2>Login</h2>
+            </div>
+            <form class="auth-form" id="login-form">
+                <div class="form-group">
+                    <label for="login-email">Email</label>
+                    <input type="email" id="login-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" required>
+                </div>
+                <div class="form-footer">
+                    <button type="submit" class="auth-button">Login</button>
+                    <p class="form-switch">Don't have an account? <a href="#" id="switch-to-signup">Sign up</a></p>
+                    <p class="forgot-password"><a href="#">Forgot password?</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Signup Modal -->
+    <div id="signup-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-modal">&times;</span>
+            <div class="modal-header">
+                <h2>Create Account</h2>
+            </div>
+            <form class="auth-form" id="signup-form">
+                <div class="form-group">
+                    <label for="signup-name">Full Name</label>
+                    <input type="text" id="signup-name" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-email">Email</label>
+                    <input type="email" id="signup-email" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-password">Password</label>
+                    <input type="password" id="signup-password" required>
+                </div>
+                <div class="form-group">
+                    <label for="signup-confirm-password">Confirm Password</label>
+                    <input type="password" id="signup-confirm-password" required>
+                </div>
+                <div class="form-footer">
+                    <button type="submit" class="auth-button">Sign Up</button>
+                    <p class="form-switch">Already have an account? <a href="#" id="switch-to-login">Login</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
 
     <section id="home" class="hero">
         <div class="hero-overlay"></div>

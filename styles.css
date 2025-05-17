@@ -2,7 +2,7 @@
 
 :root {
     --primary-color: #8B4513; /* Earthy brown */
-    --secondary-color: #6B8E23; /* Earthy green */
+    --secondary-color: #E5A97E; /* Changed to lighter copper */
     --accent-color: #D2B48C; /* Beige */
     --accent-color-light: #E5A97E; /* Lighter copper */
     --text-color: #2F4F4F; /* Dark slate */
@@ -82,6 +82,9 @@ body {
     display: flex;
     list-style: none;
     gap: 2.5rem;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
 .nav-links a {
@@ -1000,6 +1003,148 @@ footer {
     display: none;
 }
 
+/* Modal Styles */
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+    overflow: auto;
+    transition: all 0.3s ease;
+}
+
+.modal-content {
+    position: relative;
+    background: #1E2130;
+    margin: 10vh auto;
+    width: 90%;
+    max-width: 500px;
+    border-radius: var(--border-radius);
+    box-shadow: 0 5px 30px rgba(0, 0, 0, 0.5);
+    color: white;
+    overflow: hidden;
+    transform: translateY(-20px);
+    opacity: 0;
+    transition: all 0.4s ease-out;
+}
+
+.modal.active .modal-content {
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.modal-header {
+    padding: 1.5rem;
+    background: linear-gradient(to right, var(--primary-color), var(--accent-color-light));
+    text-align: center;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: white;
+}
+
+.close-modal {
+    position: absolute;
+    right: 20px;
+    top: 15px;
+    font-size: 2rem;
+    color: white;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.close-modal:hover {
+    color: var(--accent-color-light);
+}
+
+.auth-form {
+    padding: 2rem;
+}
+
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: var(--accent-color-light);
+    font-weight: 500;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: var(--border-radius);
+    color: white;
+    font-family: inherit;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+}
+
+.form-group input:focus {
+    outline: none;
+    border-color: var(--accent-color-light);
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.form-footer {
+    margin-top: 2rem;
+    text-align: center;
+}
+
+.auth-button {
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.auth-button:hover {
+    background: #6B3D13;
+    transform: translateY(-2px);
+}
+
+.form-switch {
+    margin-top: 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.form-switch a, .forgot-password a {
+    color: var(--accent-color-light);
+    text-decoration: none;
+    transition: all 0.2s ease;
+}
+
+.form-switch a:hover, .forgot-password a:hover {
+    color: var(--accent-color);
+    text-decoration: underline;
+}
+
+.forgot-password {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+}
+
 /* Responsive Design */
 @media (max-width: 992px) {
     .features-grid {
@@ -1012,9 +1157,36 @@ footer {
     }
 }
 
+.get-started-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    background: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    cursor: pointer;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.get-started-btn:hover {
+    background: var(--secondary-color);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+}
+
 @media (max-width: 768px) {
     .nav-links {
         display: none;
+    }
+    
+    .get-started-btn {
+        position: absolute;
+        right: 20px;
     }
     
     .map-wrapper iframe {
@@ -1027,9 +1199,9 @@ footer {
     }
     
     .logo-link {
-        position: absolute;
-        left: 50%;
-        transform: translateX(-50%);
+        position: relative;
+        left: 20px;
+        transform: none;
     }
     
     html, body {
