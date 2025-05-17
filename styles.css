@@ -1179,6 +1179,26 @@ footer {
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
 }
 
+@media (max-width: 370px) {
+    .navbar {
+        padding: 0.8rem 0.5rem;
+    }
+    
+    .logo {
+        font-size: 1.5rem;
+    }
+    
+    .get-started-btn {
+        padding: 0.4rem 0.7rem;
+        font-size: 0.75rem;
+        right: 5px;
+    }
+    
+    .logo-link {
+        left: 5px;
+    }
+}
+
 @media (max-width: 768px) {
     .nav-links {
         display: none;
@@ -1200,7 +1220,7 @@ footer {
     
     .logo-link {
         position: relative;
-        left: 20px;
+        left: 5px;
         transform: none;
     }
     
