@@ -163,21 +163,71 @@ document.addEventListener('DOMContentLoaded', () => {
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function (e) {
             e.preventDefault();
-            document.querySelector(this.getAttribute('href')).scrollIntoView({
-                behavior: 'smooth'
-            });
+            const targetId = this.getAttribute('href');
+            const targetElement = document.querySelector(targetId);
+            
+            if (targetElement) {
+                // Calculate position with offset for navbar height
+                const navbarHeight = document.querySelector('.navbar').offsetHeight;
+                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - navbarHeight;
+                
+                // Scroll to the calculated position
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+            }
         });
     });
 
-    // Navbar scroll effect
+    // Navbar scroll effect and section tracking
     const navbar = document.querySelector('.navbar');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const sections = document.querySelectorAll('section');
     
     window.addEventListener('scroll', () => {
+        // Navbar background effect
         if (window.scrollY > 50) {
             navbar.classList.add('scrolled');
         } else {
             navbar.classList.remove('scrolled');
         }
+        
+        // Section tracking for navbar
+        let current = '';
+        
+        // Get the contact and location sections for special handling
+        const contactSection = document.getElementById('contact');
+        const locationSection = document.getElementById('location');
+        
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop;
+            const sectionHeight = section.clientHeight;
+            
+            // Adjust the offset to trigger slightly before reaching the section
+            // This makes the navigation highlight feel more responsive
+            const scrollPosition = window.scrollY + navbar.offsetHeight + 100;
+            
+            // Special handling for Find Us section - activate it immediately after Contact section ends
+            if (contactSection && locationSection && section.id === 'location') {
+                const contactBottom = contactSection.offsetTop + contactSection.clientHeight;
+                
+                if (scrollPosition >= contactBottom) {
+                    current = 'location';
+                    return; // Skip further checks if we're in location section
+                }
+            } else if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                current = section.getAttribute('id');
+            }
+        });
+        
+        // Update active link in navbar
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
     });
     
     // Menu expand button functionality
@@ -254,6 +304,28 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initial check and scroll event listener
     setTimeout(animateOnScroll, 100); // Small delay to ensure DOM is fully loaded
     window.addEventListener('scroll', animateOnScroll);
+    
+    // Back to Top Button functionality
+    const backToTopButton = document.getElementById('back-to-top');
+    
+    if (backToTopButton) {
+        // Show button when user scrolls down 300px from the top
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+        
+        // Scroll to top when button is clicked
+        backToTopButton.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+        });
+    }
     
     // Add CSS for animations
     const style = document.createElement('style');
