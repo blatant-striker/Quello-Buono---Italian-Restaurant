@@ -1,639 +1,810 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- Origin of name: Quello Buono is nothing but a google translate from english to italian language where I translated "The good one" to italian which came out as Quello Buono to know more checkout images/Origin_of_name.png -->
     <title>Quello Buono - Italian Restaurant</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-</head>
-<body>
+    <link rel="stylesheet" href="styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+    />
+  </head>
+  <body>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <nav class="navbar">
-        <a href="#home" class="logo-link">
-            <div class="logo">Quello Buono</div>
-        </a>
-        <ul class="nav-links">
+      <a href="#home" class="logo-link">
+        <div class="logo">Quello Buono</div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#home">Home</a></li>
+        <li><a href="#menu">Menu</a></li>
+        <li><a href="#story">Our Story</a></li>
+        <li><a href="#testimonials">Reviews</a></li>
+        <li><a href="#contact">Contact</a></li>
+        <li><a href="#location">Find Us</a></li>
+      </ul>
+      <a href="#" id="get-started-button" class="get-started-btn"
+        >Get Started</a
+      >
+    </nav>
+
+    <!-- Login Modal -->
+    <div id="login-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('login-modal')"
+          >&times;</span
+        >
+        <div class="modal-header">
+          <h2>Login</h2>
+        </div>
+        <form class="auth-form" id="login-form">
+          <div id="login-message"></div>
+          <div class="form-group">
+            <label for="login-email">Email</label>
+            <input type="email" id="login-email" required />
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" required />
+          </div>
+          <div class="form-footer">
+            <button type="submit" class="auth-button" id="login-btn">
+              Login
+            </button>
+            <p class="form-switch">
+              Don't have an account?
+              <a href="#" id="switch-to-signup">Sign up</a>
+            </p>
+            <p class="forgot-password">
+              <a href="#" onclick="handleForgotPassword()">Forgot password?</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Signup Modal -->
+    <div id="signup-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('signup-modal')"
+          >&times;</span
+        >
+        <div class="modal-header">
+          <h2>Create Account</h2>
+        </div>
+        <form class="auth-form" id="signup-form">
+          <div id="signup-message"></div>
+          <div class="form-group">
+            <label for="signup-name">Full Name</label>
+            <input type="text" id="signup-name" required />
+          </div>
+          <div class="form-group">
+            <label for="signup-email">Email</label>
+            <input type="email" id="signup-email" required />
+          </div>
+          <div class="form-group">
+            <label for="signup-password">Password</label>
+            <input
+              type="password"
+              id="signup-password"
+              required
+              minlength="6"
+            />
+          </div>
+          <div class="form-group">
+            <label for="signup-confirm-password">Confirm Password</label>
+            <input type="password" id="signup-confirm-password" required />
+          </div>
+          <div class="form-footer">
+            <button type="submit" class="auth-button" id="signup-btn">
+              Sign Up
+            </button>
+            <p class="form-switch">
+              Already have an account?
+              <a href="#" id="switch-to-login">Login</a>
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Password Reset Modal -->
+    <div id="reset-modal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal" onclick="closeModal('reset-modal')"
+          >&times;</span
+        >
+        <div class="modal-header">
+          <h2>Reset Password</h2>
+        </div>
+        <form class="auth-form" id="reset-form">
+          <div id="reset-message"></div>
+          <div class="form-group">
+            <label for="reset-email">Email</label>
+            <input type="email" id="reset-email" required />
+          </div>
+          <div class="form-footer">
+            <button type="submit" class="auth-button" id="reset-btn">
+              Send Reset Email
+            </button>
+            <p class="form-switch">
+              <a href="#" onclick="switchModal('reset-modal', 'login-modal')"
+                >Back to Login</a
+              >
+            </p>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <section id="home" class="hero">
+      <div class="hero-overlay"></div>
+      <img
+        src="images/background.png"
+        alt="Restaurant interior"
+        class="hero-background"
+      />
+      <div class="hero-content">
+        <div class="hero-text">
+          <h1>Quello Buono</h1>
+          <p class="hero-description">
+            Join us on a delightful journey through Italy's culinary landscape.
+            Experience the fusion of tradition and innovation in every dish,
+            crafted to bring you closer to the vibrant spirit of Italian dining.
+          </p>
+          <a href="#contact" class="cta-button">
+            <i class="fas fa-calendar-alt"></i>
+            Book a Table
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section id="menu" class="menu-section">
+      <h2>Our Menu</h2>
+
+      <div class="menu-categories">
+        <button class="menu-category active" data-category="all">All</button>
+        <button class="menu-category" data-category="appetizers">
+          Appetizers
+        </button>
+        <button class="menu-category" data-category="pasta">Pasta</button>
+        <button class="menu-category" data-category="pizza">Pizza</button>
+        <button class="menu-category" data-category="mains">
+          Main Courses
+        </button>
+        <button class="menu-category" data-category="desserts">Desserts</button>
+      </div>
+
+      <div class="menu-grid collapsed">
+        <!-- Appetizers -->
+        <div class="menu-item" data-category="appetizers">
+          <img src="images/Insalata Mista.webp" alt="Insalata Mista" />
+          <div class="menu-item-content">
+            <h3>Insalata Mista</h3>
+            <p>Fresh seasonal vegetables with balsamic dressing</p>
+            <div class="menu-item-footer">
+              <span class="price">$8</span>
+              <i class="fas fa-leaf"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="appetizers">
+          <img src="images/Bruschetta.jpg" alt="Bruschetta" />
+          <div class="menu-item-content">
+            <h3>Bruschetta</h3>
+            <p>
+              Grilled bread rubbed with garlic, topped with tomatoes, olive oil,
+              and basil
+            </p>
+            <div class="menu-item-footer">
+              <span class="price">$7</span>
+              <i class="fas fa-leaf"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="appetizers">
+          <img src="images/Calamari Fritti.jpg" alt="Calamari Fritti" />
+          <div class="menu-item-content">
+            <h3>Calamari Fritti</h3>
+            <p>Crispy fried calamari served with lemon and marinara sauce</p>
+            <div class="menu-item-footer">
+              <span class="price">$12</span>
+              <i class="fas fa-fish"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="appetizers">
+          <img src="images/Antipasto Misto.avif" alt="Antipasto Misto" />
+          <div class="menu-item-content">
+            <h3>Antipasto Misto</h3>
+            <p>Selection of cured meats, cheeses, and marinated vegetables</p>
+            <div class="menu-item-footer">
+              <span class="price">$14</span>
+              <i class="fas fa-cheese"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pasta Dishes -->
+        <div class="menu-item" data-category="pasta">
+          <img src="images/Pasta Carbonara.jpg" alt="Pasta Carbonara" />
+          <div class="menu-item-content">
+            <h3>Pasta Carbonara</h3>
+            <p>Creamy sauce with pancetta and parmesan</p>
+            <div class="menu-item-footer">
+              <span class="price">$14</span>
+              <i class="fas fa-utensils"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="pasta">
+          <img src="images/Tagliatelle al Ragù.jpg" alt="Tagliatelle al Ragù" />
+          <div class="menu-item-content">
+            <h3>Tagliatelle al Ragù</h3>
+            <p>Ribbon pasta with slow-cooked beef and tomato sauce</p>
+            <div class="menu-item-footer">
+              <span class="price">$15</span>
+              <i class="fas fa-utensils"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="pasta">
+          <img
+            src="images/Linguine allo Scoglio.jpg"
+            alt="Linguine allo Scoglio"
+          />
+          <div class="menu-item-content">
+            <h3>Linguine allo Scoglio</h3>
+            <p>Thin pasta with mixed seafood in a light tomato sauce</p>
+            <div class="menu-item-footer">
+              <span class="price">$18</span>
+              <i class="fas fa-fish"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="pasta">
+          <img src="images/Ravioli di Ricotta.jpg" alt="Ravioli di Ricotta" />
+          <div class="menu-item-content">
+            <h3>Ravioli di Ricotta</h3>
+            <p>
+              Handmade ravioli filled with ricotta and spinach, sage butter
+              sauce
+            </p>
+            <div class="menu-item-footer">
+              <span class="price">$16</span>
+              <i class="fas fa-utensils"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="pasta">
+          <img
+            src="images/Prosciutto e Funghi.avif"
+            alt="Prosciutto e Funghi"
+          />
+          <div class="menu-item-content">
+            <h3>Prosciutto e Funghi</h3>
+            <p>Tomato sauce, mozzarella, ham, and mushrooms</p>
+            <div class="menu-item-footer">
+              <span class="price">$14</span>
+              <i class="fas fa-utensils"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Pizza -->
+        <div class="menu-item" data-category="pizza">
+          <img src="images/Pizza Margherita.jpg" alt="Pizza Margherita" />
+          <div class="menu-item-content">
+            <h3>Pizza Margherita</h3>
+            <p>Classic tomato sauce, fresh mozzarella, basil</p>
+            <div class="menu-item-footer">
+              <span class="price">$12</span>
+              <i class="fas fa-utensils"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="pizza">
+          <img src="images/Quattro Formaggi.jpg" alt="Pizza Quattro Formaggi" />
+          <div class="menu-item-content">
+            <h3>Quattro Formaggi</h3>
+            <p>
+              Four cheese pizza with mozzarella, gorgonzola, fontina, and
+              parmesan
+            </p>
+            <div class="menu-item-footer">
+              <span class="price">$15</span>
+              <i class="fas fa-cheese"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="pizza">
+          <img src="images/Pizza Diavola.jpg" alt="Pizza Diavola" />
+          <div class="menu-item-content">
+            <h3>Pizza Diavola</h3>
+            <p>Spicy pizza with tomato sauce, mozzarella, and spicy salami</p>
+            <div class="menu-item-footer">
+              <span class="price">$14</span>
+              <i class="fas fa-pepper-hot"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Main Courses -->
+        <div class="menu-item" data-category="mains">
+          <img src="images/Osso Buco.jpg" alt="Osso Buco" />
+          <div class="menu-item-content">
+            <h3>Osso Buco</h3>
+            <p>
+              Braised veal shanks with vegetables, white wine, and gremolata
+            </p>
+            <div class="menu-item-footer">
+              <span class="price">$24</span>
+              <i class="fas fa-utensils"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="mains">
+          <img
+            src="images/Bistecca alla Fiorentina.jpg"
+            alt="Bistecca alla Fiorentina"
+          />
+          <div class="menu-item-content">
+            <h3>Bistecca alla Fiorentina</h3>
+            <p>Grilled T-bone steak with rosemary and olive oil</p>
+            <div class="menu-item-footer">
+              <span class="price">$28</span>
+              <i class="fas fa-drumstick-bite"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="mains">
+          <img src="images/Branzino al Forno.jpg" alt="Branzino al Forno" />
+          <div class="menu-item-content">
+            <h3>Branzino al Forno</h3>
+            <p>Oven-baked sea bass with herbs, lemon, and white wine</p>
+            <div class="menu-item-footer">
+              <span class="price">$22</span>
+              <i class="fas fa-fish"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="mains">
+          <img src="images/Pollo al Marsala.webp" alt="Pollo al Marsala" />
+          <div class="menu-item-content">
+            <h3>Pollo al Marsala</h3>
+            <p>Chicken breast sautéed with Marsala wine and mushrooms</p>
+            <div class="menu-item-footer">
+              <span class="price">$18</span>
+              <i class="fas fa-drumstick-bite"></i>
+            </div>
+          </div>
+        </div>
+
+        <!-- Desserts -->
+        <div class="menu-item" data-category="desserts">
+          <img src="images/Tiramisù.jpg" alt="Tiramisù" />
+          <div class="menu-item-content">
+            <h3>Tiramisù</h3>
+            <p>
+              Classic Italian dessert with coffee-soaked ladyfingers and
+              mascarpone cream
+            </p>
+            <div class="menu-item-footer">
+              <span class="price">$8</span>
+              <i class="fas fa-cookie"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="desserts">
+          <img src="images/Panna Cotta.jpg" alt="Panna Cotta" />
+          <div class="menu-item-content">
+            <h3>Panna Cotta</h3>
+            <p>Silky vanilla cream with berry coulis</p>
+            <div class="menu-item-footer">
+              <span class="price">$7</span>
+              <i class="fas fa-ice-cream"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="desserts">
+          <img src="images/Cannoli Siciliani.jpg" alt="Cannoli Siciliani" />
+          <div class="menu-item-content">
+            <h3>Cannoli Siciliani</h3>
+            <p>
+              Crispy pastry tubes filled with sweet ricotta cream and pistachios
+            </p>
+            <div class="menu-item-footer">
+              <span class="price">$7</span>
+              <i class="fas fa-cookie"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="desserts">
+          <img src="images/Gelato Artigianale.jpg" alt="Gelato Artigianale" />
+          <div class="menu-item-content">
+            <h3>Gelato Artigianale</h3>
+            <p>Selection of homemade Italian ice cream</p>
+            <div class="menu-item-footer">
+              <span class="price">$6</span>
+              <i class="fas fa-ice-cream"></i>
+            </div>
+          </div>
+        </div>
+
+        <div class="menu-item" data-category="appetizers">
+          <img src="images/Arancini Siciliani.webp" alt="Arancini" />
+          <div class="menu-item-content">
+            <h3>Arancini Siciliani</h3>
+            <p>
+              Crispy fried rice balls stuffed with ragù, peas, and mozzarella
+            </p>
+            <div class="menu-item-footer">
+              <span class="price">$9</span>
+              <i class="fas fa-utensils"></i>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="menu-expand-button">
+        <span>Show More</span>
+        <i class="fas fa-chevron-down"></i>
+      </button>
+    </section>
+
+    <section id="story" class="story-section">
+      <div class="story-container">
+        <h2>Our Story</h2>
+        <p class="story-description">
+          Established in 1995, Quello Buono brings the authentic flavors of
+          Italy to your table. Our recipes have been passed down through
+          generations, ensuring an unforgettable dining experience.
+        </p>
+
+        <div class="story-image-container">
+          <img
+            src="images/Resturant Interior.png"
+            alt="Restaurant Interior"
+            class="story-image"
+          />
+        </div>
+
+        <div class="story-content">
+          <h3>Authentic Italian Experience</h3>
+          <p class="story-text">
+            At Quello Buono, we believe in the power of tradition. Our chefs,
+            trained in the culinary arts of Naples and Rome, bring you dishes
+            that capture the essence of Italy.
+          </p>
+
+          <div class="features-grid">
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-leaf"></i>
+              </div>
+              <h4>Fresh Ingredients</h4>
+              <p>
+                Sourced daily from local farmers and imported directly from
+                Italy
+              </p>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-utensils"></i>
+              </div>
+              <h4>Handcrafted Pasta</h4>
+              <p>Made in-house daily using traditional techniques</p>
+            </div>
+
+            <div class="feature-item">
+              <div class="feature-icon">
+                <i class="fas fa-wine-glass-alt"></i>
+              </div>
+              <h4>Award-Winning Wines</h4>
+              <p>Carefully selected from Italy's finest vineyards</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="testimonials" class="testimonials-section">
+      <h2>What Our Guests Say</h2>
+      <p class="testimonials-subtitle">
+        Don't just take our word for it - hear from our satisfied customers
+      </p>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">
+            "The best Italian food I've had outside of Italy! The pasta was
+            perfectly al dente and the flavors were incredible."
+          </p>
+          <div class="testimonial-author">
+            <img
+              src="https://randomuser.me/api/portraits/women/65.jpg"
+              alt="Sarah J."
+              class="author-image"
+            />
+            <div class="author-info">
+              <h4>Sarah J.</h4>
+              <p>Food Critic</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">
+            "An unforgettable dining experience. The osso buco melted in my
+            mouth and the wine pairing was perfect."
+          </p>
+          <div class="testimonial-author">
+            <img
+              src="https://randomuser.me/api/portraits/men/32.jpg"
+              alt="Michael T."
+              class="author-image"
+            />
+            <div class="author-info">
+              <h4>Michael T.</h4>
+              <p>Regular Guest</p>
+            </div>
+          </div>
+        </div>
+        <div class="testimonial-card">
+          <div class="stars">
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+            <i class="fas fa-star"></i>
+          </div>
+          <p class="testimonial-text">
+            "We celebrated our anniversary here and the staff made it so
+            special. The food, ambiance, and service were all impeccable."
+          </p>
+          <div class="testimonial-author">
+            <img
+              src="https://randomuser.me/api/portraits/women/44.jpg"
+              alt="Emily R."
+              class="author-image"
+            />
+            <div class="author-info">
+              <h4>Emily R.</h4>
+              <p>First-time Visitor</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact" class="contact-section">
+      <h2>Contact Us</h2>
+      <p class="contact-subtitle">
+        We'd love to hear from you. Make a reservation or send us a message.
+      </p>
+
+      <div class="contact-container">
+        <div class="reservation-form">
+          <h3>Make a Reservation</h3>
+          <form class="contact-form">
+            <div class="form-group">
+              <label for="fullname">Full Name</label>
+              <input type="text" id="fullname" required />
+            </div>
+            <div class="form-group">
+              <label for="email">Email</label>
+              <input type="email" id="email" required />
+            </div>
+            <div class="form-group">
+              <label for="phone">Phone</label>
+              <input type="tel" id="phone" required />
+            </div>
+            <div class="form-row">
+              <div class="form-group half">
+                <label for="date">Date</label>
+                <input type="date" id="date" required />
+              </div>
+              <div class="form-group half">
+                <label for="time">Time</label>
+                <input type="time" id="time" required />
+              </div>
+            </div>
+            <div class="form-group">
+              <label for="guests">Number of Guests</label>
+              <select id="guests" required>
+                <option value="1">1 person</option>
+                <option value="2">2 people</option>
+                <option value="3">3 people</option>
+                <option value="4">4 people</option>
+                <option value="5">5 people</option>
+                <option value="6+">6+ people</option>
+              </select>
+            </div>
+            <button type="submit" class="submit-button reserve-button">
+              <i class="fas fa-calendar-check"></i>
+              &nbsp;Reserve Table
+            </button>
+          </form>
+        </div>
+
+        <div class="contact-info">
+          <h3>Visit Us</h3>
+          <ul class="info-list">
+            <li>
+              <i class="fas fa-map-marker-alt"></i>
+              <div>
+                <h4>Address</h4>
+                <p>123 Example St, Calgary, AB A1B 2C3</p>
+              </div>
+            </li>
+            <li>
+              <i class="fas fa-phone"></i>
+              <div>
+                <h4>Phone</h4>
+                <p>+1 519 123 4567</p>
+              </div>
+            </li>
+            <li>
+              <i class="fas fa-envelope"></i>
+              <div>
+                <h4>Email</h4>
+                <p>info@quellobuono.com</p>
+              </div>
+            </li>
+            <li>
+              <i class="fas fa-clock"></i>
+              <div>
+                <h4>Hours</h4>
+                <p>Monday - Friday: 11:00 AM - 10:00 PM</p>
+                <p>Saturday - Sunday: 10:00 AM - 11:00 PM</p>
+              </div>
+            </li>
+          </ul>
+
+          <div class="contact-social">
+            <h4>Follow Us</h4>
+            <div class="social-links">
+              <a
+                href="https://facebook.com"
+                target="_blank"
+                aria-label="Facebook"
+                ><i class="fab fa-facebook-f"></i
+              ></a>
+              <a
+                href="https://instagram.com"
+                target="_blank"
+                aria-label="Instagram"
+                ><i class="fab fa-instagram"></i
+              ></a>
+              <a href="https://twitter.com" target="_blank" aria-label="Twitter"
+                ><i class="fab fa-twitter"></i
+              ></a>
+              <a href="https://yelp.com" target="_blank" aria-label="Yelp"
+                ><i class="fab fa-yelp"></i
+              ></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="location" class="location-section">
+      <h2>Find Us</h2>
+      <p class="location-subtitle">
+        We're conveniently located in the heart of the city
+      </p>
+
+      <div class="map-container full-width">
+        <div class="map-wrapper">
+          <iframe
+            src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2689.2891632180054!2d-122.35198492346974!3d47.62050727118447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5490151f4ed5b7f9%3A0xdb2ba8689ed0920d!2sSpace%20Needle!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus"
+            width="100%"
+            height="450"
+            style="border: 0"
+            allowfullscreen=""
+            loading="lazy"
+            referrerpolicy="no-referrer-when-downgrade"
+          >
+          </iframe>
+        </div>
+        <p class="map-address">123 Example St, Calgary, AB A1B 2C3</p>
+        <p class="map-plus-code">Calgary, Alberta</p>
+      </div>
+    </section>
+
+    <footer>
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Quello Buono</h3>
+          <p>Authentic Italian cuisine since 1995</p>
+          <p>Designed by Function Drive</p>
+        </div>
+        <div class="footer-section">
+          <h3>Quick Links</h3>
+          <ul class="footer-links">
             <li><a href="#home">Home</a></li>
             <li><a href="#menu">Menu</a></li>
             <li><a href="#story">Our Story</a></li>
             <li><a href="#testimonials">Reviews</a></li>
             <li><a href="#contact">Contact</a></li>
-            <li><a href="#location">Find Us</a></li>
-        </ul>
-        <a href="#" id="get-started-button" class="get-started-btn">Get Started</a>
-    </nav>
-    
-    <!-- Login Modal -->
-    <div id="login-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-header">
-                <h2>Login</h2>
-            </div>
-            <form class="auth-form" id="login-form">
-                <div class="form-group">
-                    <label for="login-email">Email</label>
-                    <input type="email" id="login-email" required>
-                </div>
-                <div class="form-group">
-                    <label for="login-password">Password</label>
-                    <input type="password" id="login-password" required>
-                </div>
-                <div class="form-footer">
-                    <button type="submit" class="auth-button">Login</button>
-                    <p class="form-switch">Don't have an account? <a href="#" id="switch-to-signup">Sign up</a></p>
-                    <p class="forgot-password"><a href="#">Forgot password?</a></p>
-                </div>
-            </form>
+          </ul>
         </div>
-    </div>
-    
-    <!-- Signup Modal -->
-    <div id="signup-modal" class="modal">
-        <div class="modal-content">
-            <span class="close-modal">&times;</span>
-            <div class="modal-header">
-                <h2>Create Account</h2>
-            </div>
-            <form class="auth-form" id="signup-form">
-                <div class="form-group">
-                    <label for="signup-name">Full Name</label>
-                    <input type="text" id="signup-name" required>
-                </div>
-                <div class="form-group">
-                    <label for="signup-email">Email</label>
-                    <input type="email" id="signup-email" required>
-                </div>
-                <div class="form-group">
-                    <label for="signup-password">Password</label>
-                    <input type="password" id="signup-password" required>
-                </div>
-                <div class="form-group">
-                    <label for="signup-confirm-password">Confirm Password</label>
-                    <input type="password" id="signup-confirm-password" required>
-                </div>
-                <div class="form-footer">
-                    <button type="submit" class="auth-button">Sign Up</button>
-                    <p class="form-switch">Already have an account? <a href="#" id="switch-to-login">Login</a></p>
-                </div>
-            </form>
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <p>
+            <i class="fas fa-map-marker-alt"></i> 123 Example St, Calgary, AB
+            A1B 2C3
+          </p>
+          <p><i class="fas fa-phone"></i> +1 519 123 4567</p>
+          <p><i class="fas fa-envelope"></i> info@quellobuono.com</p>
         </div>
-    </div>
-
-    <section id="home" class="hero">
-        <div class="hero-overlay"></div>
-        <img src="images/background.png" alt="Restaurant interior" class="hero-background">
-        <div class="hero-content">
-            <div class="hero-text">
-                <h1>Quello Buono</h1>
-                <p class="hero-description">Join us on a delightful journey through Italy's culinary landscape. Experience the fusion of tradition and innovation in every dish, crafted to bring you closer to the vibrant spirit of Italian dining.</p>
-                <a href="#contact" class="cta-button">
-                    <i class="fas fa-calendar-alt"></i>
-                    Book a Table
-                </a>
-            </div>
+        <div class="footer-section">
+          <h3>Follow Us</h3>
+          <div class="social-links">
+            <a href="https://facebook.com" target="_blank" aria-label="Facebook"
+              ><i class="fab fa-facebook-f"></i
+            ></a>
+            <a
+              href="https://instagram.com"
+              target="_blank"
+              aria-label="Instagram"
+              ><i class="fab fa-instagram"></i
+            ></a>
+            <a href="https://twitter.com" target="_blank" aria-label="Twitter"
+              ><i class="fab fa-twitter"></i
+            ></a>
+            <a href="https://yelp.com" target="_blank" aria-label="Yelp"
+              ><i class="fab fa-yelp"></i
+            ></a>
+          </div>
         </div>
-    </section>
-
-    <section id="menu" class="menu-section">
-        <h2>Our Menu</h2>
-        
-        <div class="menu-categories">
-            <button class="menu-category active" data-category="all">All</button>
-            <button class="menu-category" data-category="appetizers">Appetizers</button>
-            <button class="menu-category" data-category="pasta">Pasta</button>
-            <button class="menu-category" data-category="pizza">Pizza</button>
-            <button class="menu-category" data-category="mains">Main Courses</button>
-            <button class="menu-category" data-category="desserts">Desserts</button>
-        </div>
-        
-        <div class="menu-grid collapsed">
-            <!-- Appetizers -->
-            <div class="menu-item" data-category="appetizers">
-                <img src="images/Insalata Mista.webp" alt="Insalata Mista">
-                <div class="menu-item-content">
-                    <h3>Insalata Mista</h3>
-                    <p>Fresh seasonal vegetables with balsamic dressing</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$8</span>
-                        <i class="fas fa-leaf"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-item" data-category="appetizers">
-                <img src="images/Bruschetta.jpg" alt="Bruschetta">
-                <div class="menu-item-content">
-                    <h3>Bruschetta</h3>
-                    <p>Grilled bread rubbed with garlic, topped with tomatoes, olive oil, and basil</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$7</span>
-                        <i class="fas fa-leaf"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-item" data-category="appetizers">
-                <img src="images/Calamari Fritti.jpg" alt="Calamari Fritti">
-                <div class="menu-item-content">
-                    <h3>Calamari Fritti</h3>
-                    <p>Crispy fried calamari served with lemon and marinara sauce</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$12</span>
-                        <i class="fas fa-fish"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-item" data-category="appetizers">
-                <img src="images/Antipasto Misto.avif" alt="Antipasto Misto">
-                <div class="menu-item-content">
-                    <h3>Antipasto Misto</h3>
-                    <p>Selection of cured meats, cheeses, and marinated vegetables</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$14</span>
-                        <i class="fas fa-cheese"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Pasta Dishes -->
-            <div class="menu-item" data-category="pasta">
-                <img src="images/Pasta Carbonara.jpg" alt="Pasta Carbonara">
-                <div class="menu-item-content">
-                    <h3>Pasta Carbonara</h3>
-                    <p>Creamy sauce with pancetta and parmesan</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$14</span>
-                        <i class="fas fa-utensils"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-item" data-category="pasta">
-                <img src="images/Tagliatelle al Ragù.jpg" alt="Tagliatelle al Ragù">
-                <div class="menu-item-content">
-                    <h3>Tagliatelle al Ragù</h3>
-                    <p>Ribbon pasta with slow-cooked beef and tomato sauce</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$15</span>
-                        <i class="fas fa-utensils"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-item" data-category="pasta">
-                <img src="images/Linguine allo Scoglio.jpg" alt="Linguine allo Scoglio">
-                <div class="menu-item-content">
-                    <h3>Linguine allo Scoglio</h3>
-                    <p>Thin pasta with mixed seafood in a light tomato sauce</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$18</span>
-                        <i class="fas fa-fish"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-item" data-category="pasta">
-                <img src="images/Ravioli di Ricotta.jpg" alt="Ravioli di Ricotta">
-                <div class="menu-item-content">
-                    <h3>Ravioli di Ricotta</h3>
-                    <p>Handmade ravioli filled with ricotta and spinach, sage butter sauce</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$16</span>
-                        <i class="fas fa-utensils"></i>
-                    </div>
-                </div>
-            </div>
-
-            <div class="menu-item" data-category="pasta">
-                <img src="images/Prosciutto e Funghi.avif" alt="Prosciutto e Funghi">
-                <div class="menu-item-content">
-                    <h3>Prosciutto e Funghi</h3>
-                    <p>Tomato sauce, mozzarella, ham, and mushrooms</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$14</span>
-                        <i class="fas fa-utensils"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Pizza -->
-            <div class="menu-item" data-category="pizza">
-                <img src="images/Pizza Margherita.jpg" alt="Pizza Margherita">
-                <div class="menu-item-content">
-                    <h3>Pizza Margherita</h3>
-                    <p>Classic tomato sauce, fresh mozzarella, basil</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$12</span>
-                        <i class="fas fa-utensils"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-item" data-category="pizza">
-                <img src="images/Quattro Formaggi.jpg" alt="Pizza Quattro Formaggi">
-                <div class="menu-item-content">
-                    <h3>Quattro Formaggi</h3>
-                    <p>Four cheese pizza with mozzarella, gorgonzola, fontina, and parmesan</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$15</span>
-                        <i class="fas fa-cheese"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-item" data-category="pizza">
-                <img src="images/Pizza Diavola.jpg" alt="Pizza Diavola">
-                <div class="menu-item-content">
-                    <h3>Pizza Diavola</h3>
-                    <p>Spicy pizza with tomato sauce, mozzarella, and spicy salami</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$14</span>
-                        <i class="fas fa-pepper-hot"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Main Courses -->
-            <div class="menu-item" data-category="mains">
-                <img src="images/Osso Buco.jpg" alt="Osso Buco">
-                <div class="menu-item-content">
-                    <h3>Osso Buco</h3>
-                    <p>Braised veal shanks with vegetables, white wine, and gremolata</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$24</span>
-                        <i class="fas fa-utensils"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-item" data-category="mains">
-                <img src="images/Bistecca alla Fiorentina.jpg" alt="Bistecca alla Fiorentina">
-                <div class="menu-item-content">
-                    <h3>Bistecca alla Fiorentina</h3>
-                    <p>Grilled T-bone steak with rosemary and olive oil</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$28</span>
-                        <i class="fas fa-drumstick-bite"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-item" data-category="mains">
-                <img src="images/Branzino al Forno.jpg" alt="Branzino al Forno">
-                <div class="menu-item-content">
-                    <h3>Branzino al Forno</h3>
-                    <p>Oven-baked sea bass with herbs, lemon, and white wine</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$22</span>
-                        <i class="fas fa-fish"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-item" data-category="mains">
-                <img src="images/Pollo al Marsala.webp" alt="Pollo al Marsala">
-                <div class="menu-item-content">
-                    <h3>Pollo al Marsala</h3>
-                    <p>Chicken breast sautéed with Marsala wine and mushrooms</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$18</span>
-                        <i class="fas fa-drumstick-bite"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <!-- Desserts -->
-            <div class="menu-item" data-category="desserts">
-                <img src="images/Tiramisù.jpg" alt="Tiramisù">
-                <div class="menu-item-content">
-                    <h3>Tiramisù</h3>
-                    <p>Classic Italian dessert with coffee-soaked ladyfingers and mascarpone cream</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$8</span>
-                        <i class="fas fa-cookie"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-item" data-category="desserts">
-                <img src="images/Panna Cotta.jpg" alt="Panna Cotta">
-                <div class="menu-item-content">
-                    <h3>Panna Cotta</h3>
-                    <p>Silky vanilla cream with berry coulis</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$7</span>
-                        <i class="fas fa-ice-cream"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-item" data-category="desserts">
-                <img src="images/Cannoli Siciliani.jpg" alt="Cannoli Siciliani">
-                <div class="menu-item-content">
-                    <h3>Cannoli Siciliani</h3>
-                    <p>Crispy pastry tubes filled with sweet ricotta cream and pistachios</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$7</span>
-                        <i class="fas fa-cookie"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-item" data-category="desserts">
-                <img src="images/Gelato Artigianale.jpg" alt="Gelato Artigianale">
-                <div class="menu-item-content">
-                    <h3>Gelato Artigianale</h3>
-                    <p>Selection of homemade Italian ice cream</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$6</span>
-                        <i class="fas fa-ice-cream"></i>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="menu-item" data-category="appetizers">
-                <img src="images/Arancini Siciliani.webp" alt="Arancini">
-                <div class="menu-item-content">
-                    <h3>Arancini Siciliani</h3>
-                    <p>Crispy fried rice balls stuffed with ragù, peas, and mozzarella</p>
-                    <div class="menu-item-footer">
-                        <span class="price">$9</span>
-                        <i class="fas fa-utensils"></i>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <button class="menu-expand-button">
-            <span>Show More</span>
-            <i class="fas fa-chevron-down"></i>
-        </button>
-    </section>
-
-    <section id="story" class="story-section">
-        <div class="story-container">
-            <h2>Our Story</h2>
-            <p class="story-description">Established in 1995, Quello Buono brings the authentic flavors of Italy to your table. Our recipes have been passed down through generations, ensuring an unforgettable dining experience.</p>
-            
-            <div class="story-image-container">
-                <img src="images/Resturant Interior.png" alt="Restaurant Interior" class="story-image">
-            </div>
-            
-            <div class="story-content">
-                <h3>Authentic Italian Experience</h3>
-                <p class="story-text">At Quello Buono, we believe in the power of tradition. Our chefs, trained in the culinary arts of Naples and Rome, bring you dishes that capture the essence of Italy.</p>
-                
-                <div class="features-grid">
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-leaf"></i>
-                        </div>
-                        <h4>Fresh Ingredients</h4>
-                        <p>Sourced daily from local farmers and imported directly from Italy</p>
-                    </div>
-                    
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-utensils"></i>
-                        </div>
-                        <h4>Handcrafted Pasta</h4>
-                        <p>Made in-house daily using traditional techniques</p>
-                    </div>
-                    
-                    <div class="feature-item">
-                        <div class="feature-icon">
-                            <i class="fas fa-wine-glass-alt"></i>
-                        </div>
-                        <h4>Award-Winning Wines</h4>
-                        <p>Carefully selected from Italy's finest vineyards</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="testimonials" class="testimonials-section">
-        <h2>What Our Guests Say</h2>
-        <p class="testimonials-subtitle">Don't just take our word for it - hear from our satisfied customers</p>
-        <div class="testimonials-grid">
-            <div class="testimonial-card">
-                <div class="stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <p class="testimonial-text">"The best Italian food I've had outside of Italy! The pasta was perfectly al dente and the flavors were incredible."</p>
-                <div class="testimonial-author">
-                    <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="Sarah J." class="author-image">
-                    <div class="author-info">
-                        <h4>Sarah J.</h4>
-                        <p>Food Critic</p>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-card">
-                <div class="stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <p class="testimonial-text">"An unforgettable dining experience. The osso buco melted in my mouth and the wine pairing was perfect."</p>
-                <div class="testimonial-author">
-                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Michael T." class="author-image">
-                    <div class="author-info">
-                        <h4>Michael T.</h4>
-                        <p>Regular Guest</p>
-                    </div>
-                </div>
-            </div>
-            <div class="testimonial-card">
-                <div class="stars">
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                    <i class="fas fa-star"></i>
-                </div>
-                <p class="testimonial-text">"We celebrated our anniversary here and the staff made it so special. The food, ambiance, and service were all impeccable."</p>
-                <div class="testimonial-author">
-                    <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="Emily R." class="author-image">
-                    <div class="author-info">
-                        <h4>Emily R.</h4>
-                        <p>First-time Visitor</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <section id="contact" class="contact-section">
-        <h2>Contact Us</h2>
-        <p class="contact-subtitle">We'd love to hear from you. Make a reservation or send us a message.</p>
-        
-        <div class="contact-container">
-            <div class="reservation-form">
-                <h3>Make a Reservation</h3>
-                <form class="contact-form">
-                    <div class="form-group">
-                        <label for="fullname">Full Name</label>
-                        <input type="text" id="fullname" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="phone">Phone</label>
-                        <input type="tel" id="phone" required>
-                    </div>
-                    <div class="form-row">
-                        <div class="form-group half">
-                            <label for="date">Date</label>
-                            <input type="date" id="date" required>
-                        </div>
-                        <div class="form-group half">
-                            <label for="time">Time</label>
-                            <input type="time" id="time" required>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="guests">Number of Guests</label>
-                        <select id="guests" required>
-                            <option value="1">1 person</option>
-                            <option value="2">2 people</option>
-                            <option value="3">3 people</option>
-                            <option value="4">4 people</option>
-                            <option value="5">5 people</option>
-                            <option value="6+">6+ people</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="submit-button reserve-button">
-                        <i class="fas fa-calendar-check"></i>
-                        &nbsp;Reserve Table
-                    </button>
-                </form>
-            </div>
-            
-            <div class="contact-info">
-                <h3>Visit Us</h3>
-                <ul class="info-list">
-                    <li>
-                        <i class="fas fa-map-marker-alt"></i>
-                        <div>
-                            <h4>Address</h4>
-                            <p>123 Example St, Calgary, AB A1B 2C3</p>
-                        </div>
-                    </li>
-                    <li>
-                        <i class="fas fa-phone"></i>
-                        <div>
-                            <h4>Phone</h4>
-                            <p>+1 519 123 4567</p>
-                        </div>
-                    </li>
-                    <li>
-                        <i class="fas fa-envelope"></i>
-                        <div>
-                            <h4>Email</h4>
-                            <p>info@quellobuono.com</p>
-                        </div>
-                    </li>
-                    <li>
-                        <i class="fas fa-clock"></i>
-                        <div>
-                            <h4>Hours</h4>
-                            <p>Monday - Friday: 11:00 AM - 10:00 PM</p>
-                            <p>Saturday - Sunday: 10:00 AM - 11:00 PM</p>
-                        </div>
-                    </li>
-                </ul>
-                
-                <div class="contact-social">
-                    <h4>Follow Us</h4>
-                    <div class="social-links">
-                        <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                        <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                        <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                        <a href="https://yelp.com" target="_blank" aria-label="Yelp"><i class="fab fa-yelp"></i></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <section id="location" class="location-section">
-        <h2>Find Us</h2>
-        <p class="location-subtitle">We're conveniently located in the heart of the city</p>
-        
-        <div class="map-container full-width">
-            <div class="map-wrapper">
-                <iframe 
-                    src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2689.2891632180054!2d-122.35198492346974!3d47.62050727118447!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x5490151f4ed5b7f9%3A0xdb2ba8689ed0920d!2sSpace%20Needle!5e0!3m2!1sen!2sus!4v1620000000000!5m2!1sen!2sus" 
-                    width="100%" 
-                    height="450" 
-                    style="border:0;" 
-                    allowfullscreen="" 
-                    loading="lazy" 
-                    referrerpolicy="no-referrer-when-downgrade">
-                </iframe>
-            </div>
-            <p class="map-address">123 Example St, Calgary, AB A1B 2C3</p>
-            <p class="map-plus-code">Calgary, Alberta</p>
-        </div>
-    </section>
-
-    <footer>
-        <div class="footer-content">
-            <div class="footer-section">
-                <h3>Quello Buono</h3>
-                <p>Authentic Italian cuisine since 1995</p>
-                <p>Designed by Function Drive</p>
-            </div>
-            <div class="footer-section">
-                <h3>Quick Links</h3>
-                <ul class="footer-links">
-                    <li><a href="#home">Home</a></li>
-                    <li><a href="#menu">Menu</a></li>
-                    <li><a href="#story">Our Story</a></li>
-                    <li><a href="#testimonials">Reviews</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-            </div>
-            <div class="footer-section">
-                <h3>Contact</h3>
-                <p><i class="fas fa-map-marker-alt"></i> 123 Example St, Calgary, AB A1B 2C3</p>
-                <p><i class="fas fa-phone"></i> +1 519 123 4567</p>
-                <p><i class="fas fa-envelope"></i> info@quellobuono.com</p>
-            </div>
-            <div class="footer-section">
-                <h3>Follow Us</h3>
-                <div class="social-links">
-                    <a href="https://facebook.com" target="_blank" aria-label="Facebook"><i class="fab fa-facebook-f"></i></a>
-                    <a href="https://instagram.com" target="_blank" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
-                    <a href="https://twitter.com" target="_blank" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
-                    <a href="https://yelp.com" target="_blank" aria-label="Yelp"><i class="fab fa-yelp"></i></a>
-                </div>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>&copy; 2025 Quello Buono. All rights reserved.</p>
-            <p>Made with <i class="fas fa-heart"></i> by Function Drive</p>
-        </div>
+      </div>
+      <div class="footer-bottom">
+        <p>&copy; 2025 Quello Buono. All rights reserved.</p>
+        <p>Made with <i class="fas fa-heart"></i> by Function Drive</p>
+      </div>
     </footer>
 
     <script src="script.js"></script>
     <!-- Back to Top Button -->
     <button id="back-to-top" aria-label="Back to top">
-        <i class="fas fa-chevron-up"></i>
+      <i class="fas fa-chevron-up"></i>
     </button>
-</body>
+  </body>
 </html>
